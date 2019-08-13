@@ -1,0 +1,19 @@
+{
+  "name": "kevin-bacon",
+  "version": "1.0.0",
+  "description": "The goal is to take any page on wikipedia and compute the number of links to the \"Kevin Bacon\" wikipedia entry (https://en.wikipedia.org/wiki/Kevin_Bacon).",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/haydenwade/kevin-bacon.git"
+  },
+  "author": "hayden wade",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/haydenwade/kevin-bacon/issues"
+  },
+  "homepage": "https://github.com/haydenwade/kevin-bacon#readme"
+}
