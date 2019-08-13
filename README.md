@@ -13,8 +13,12 @@ Inputs to the program will be a wikipedia url and outputs should be an integer.
 # Table of Contents
 
 ## Run Code
-1. From a terminal run: `node index.js`, should see `Server running at: http://0.0.0.0:3000` in the stdout
+1. From a terminal run: `npm run start`, should see `Server running at: http://0.0.0.0:3000` in the stdout
 2. Use the swagger docs to get started: [http://localhost:3000/documentation](http://localhost:3000/documentation)
+
+## Run Test Cases (E2E)
+1. Start API by running the following command in a terminal of choice: `npm run start`
+2. Run command to execute tests (use new terminal): `npm run e2e`
 
 ## Considerations
 
