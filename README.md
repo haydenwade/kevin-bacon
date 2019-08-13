@@ -14,4 +14,5 @@ Inputs to the program will be a wikipedia url and outputs should be an integer.
 
 ## Code
 Located in `/src`
+
 To run: `node index.js` or use Visual Studio Debugger (F5)
