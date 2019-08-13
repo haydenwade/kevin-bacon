@@ -12,18 +12,9 @@ Inputs to the program will be a wikipedia url and outputs should be an integer.
 
 # Table of Contents
 
-## Code
-1. `node index.js`
+## Run Code
+1. From a terminal run: `node index.js`, should see `Server running at: http://0.0.0.0:3000` in the stdout
 2. Use the swagger docs to get started: [http://localhost:3000/documentation](http://localhost:3000/documentation)
-
-### Compute Degrees of Separation
-1. Update `line TODO:XXXX` with source you want to test
-2. Run: `node index.js` or use Visual Studio Debugger with `Run Compute` config
-
-### Web Scraper
-1. Update `line TODO:XXXX` with the source page and depth
-2. Run: `node webscraper.js` or use Visual Studio Debugger with `Run Web Scraper` config
-
 
 ## Considerations
 
