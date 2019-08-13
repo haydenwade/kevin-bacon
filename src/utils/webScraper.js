@@ -1,4 +1,5 @@
 const rp = require('request-promise');
+const globalConstants = require('./globalConstants');
 
 function fetchPage(id) {
     //https://www.mediawiki.org/wiki/API:Parsing_wikitext
@@ -29,7 +30,7 @@ function checkPrefixForMatch(str, prefixes = ['Template talk:', 'Template:', 'Ca
 /*
 Will parse wikipedia page for links and store in graph (creates vertices and edges)
 */
-async function parseSinglePage(id) {
+async function parseSinglePage(id,dataSource) {
     try {
         // console.log(`-----------------Parsing page:${id}------------------`);
         let subPages = [];
@@ -42,7 +43,12 @@ async function parseSinglePage(id) {
                 if (!checkPrefixForMatch(link)) {
                     // console.log(link);
                     subPages.push(link);
-                    //TODO: save to graph as vertex and add edges
+                    //save to graph as vertex and add edges
+                    const newNodeId = globalConstants.wikipediaPrefix + link;
+                    if(!dataSource.getNode(newNodeId)){
+                        dataSource.insertNode(newNodeId,{});
+                        dataSource.addEdge(globalConstants.wikipediaPrefix + id,newNodeId);
+                    }
                 }
             }
         }
@@ -56,21 +62,24 @@ async function parseSinglePage(id) {
 Depths-first search to a depth of N
 */
 let visitedSubPages = new Set();//prevents from cycles
-async function parsePagesWithDepth(startingPageId, depth) {
+async function parsePagesWithDepth(startingPageId, depth, dataSource, resetVisited = false) {
+    if(resetVisited){
+        visitedSubPages.clear();
+    }
     // console.log(`---------------Depth:${depth}-----------------`);
     visitedSubPages.add(startingPageId);
     if (depth < 0) {
         return;
     }
-    let subPages = await parseSinglePage(startingPageId);
+    let subPages = await parseSinglePage(startingPageId, dataSource);
     for (let i = 0; i < subPages.length; i++) {
         if (!visitedSubPages.has(subPages[i])) {
-            await parsePagesWithDepth(subPages[i], depth - 1);
+            await parsePagesWithDepth(subPages[i], depth - 1, dataSource);
         }
     }
 }
 
-parsePagesWithDepth('Kevin_Bacon', 2);
+//parsePagesWithDepth('Kevin_Bacon', 2);
 
 module.exports = {
     parseSinglePage,

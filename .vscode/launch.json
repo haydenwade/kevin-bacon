@@ -15,6 +15,12 @@
             "request": "launch",
             "name": "Run Web Scraper",
             "program": "${workspaceFolder}\\webscraper.js"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Run API",
+            "program": "${workspaceFolder}\\index.js"
         }
     ]
 }
