@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/haydenwade/kevin-bacon/issues"
   },
-  "homepage": "https://github.com/haydenwade/kevin-bacon#readme"
+  "homepage": "https://github.com/haydenwade/kevin-bacon#readme",
+  "dependencies": {
+    "request": "^2.88.0",
+    "request-promise": "^4.2.4"
+  }
 }
