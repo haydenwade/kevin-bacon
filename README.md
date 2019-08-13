@@ -13,6 +13,9 @@ Inputs to the program will be a wikipedia url and outputs should be an integer.
 # Table of Contents
 
 ## Code
+1. `node index.js`
+2. Use the swagger docs to get started: (http://localhost:3000/documentation)[http://localhost:3000/documentation]
+
 ### Compute Degrees of Separation
 1. Update `line TODO:XXXX` with source you want to test
 2. Run: `node index.js` or use Visual Studio Debugger with `Run Compute` config
