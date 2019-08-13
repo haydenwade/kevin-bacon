@@ -15,8 +15,10 @@ class DirectedGraph {
         this.nodes = new Map();
     }
     insertNode(id, data) {
-        const node = new GraphNode(id, data);
-        this.nodes.set(id, node);
+        if(!this.nodes.has(id)){
+            const node = new GraphNode(id, data);
+            this.nodes.set(id, node);
+        }
     }
     getNode(id) {
         return this.nodes.get(id);
