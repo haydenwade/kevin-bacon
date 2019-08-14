@@ -10,14 +10,14 @@ const getDegreesOfSeparationRoute = {
         tags: ['api'],
         validate: {
             payload: {
-                source: Joi.string().required(),
-                target: Joi.string().optional().default('https://en.wikipedia.org/wiki/Kevin_Bacon')
+                sourceUrl: Joi.string().optional().default('https://en.wikipedia.org/wiki/Tom_Cruise'),
+                targetUrl: Joi.string().optional().default('https://en.wikipedia.org/wiki/Kevin_Bacon')
             }
         }
     },
     handler: async function (request, h) {
         try {
-            const res = await graphRepo.computeSeparation(request.payload.source, request.payload.target);
+            const res = await graphRepo.computeSeparation(request.payload.sourceUrl, request.payload.targetUrl);
             return h.response(res).code(200);
         }
         catch (err) {

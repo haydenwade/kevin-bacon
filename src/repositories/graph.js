@@ -1,17 +1,34 @@
-const dataSource = require('../utils/inMemoryGraph');
 const webScraper = require('../utils/webScraper');
-const globalConstants = require('../utils/globalConstants');
+const helperMethods = require('../utils/helperMethods');
+
+const dataSource = require('../utils/inMemoryGraph');
+const dataSource2 = require('../utils/webScraperAsGraph');
+const dataSource3 = require('../utils/fileGraph');
 
 const graphRepo = {
-    computeSeparation: async(srcId, targetId)=>{
-        return await dataSource.computeDegreesOfSeparation(srcId,targetId);
+    computeSeparation: async (sourceUrl, targetUrl) => {
+        return await dataSource.computeDegreesOfSeparation(sourceUrl, targetUrl);
     },
-    populate: async(srcId,depth)=>{
-        const srcIdWithoutHttps = srcId.substr(globalConstants.wikipediaPrefix.length);
-        await webScraper.parsePagesWithDepth(srcIdWithoutHttps,depth,dataSource,true);
+    computeSeparation2: async (sourceUrl, targetUrl) => {
+        const sourceId = helperMethods.getIdFromBaseUrl(sourceUrl);
+        const targetId = helperMethods.getIdFromBaseUrl(targetUrl);
+        return await dataSource2.computeDegreesOfSeparation(sourceId, targetId);
+    },
+    computeSeparation3: async (sourceUrl, targetUrl) => {
+        const sourceId = helperMethods.getIdFromBaseUrl(sourceUrl);
+        const targetId = helperMethods.getIdFromBaseUrl(targetUrl);
+        return await dataSource3.computeDegreesOfSeparation(sourceId, targetId);
+    },
+    populate: async (sourceUrl, depth, saveDataToFiles, useGraphLikeDataSource) => {
+        const sourceId = helperMethods.getIdFromBaseUrl(sourceUrl);
+        if(!useGraphLikeDataSource){
+            await webScraper.parsePagesWithDepth(sourceId, depth, null, saveDataToFiles, true);
+        }else{
+            await webScraper.parsePagesWithDepth(sourceId, depth, dataSource, saveDataToFiles, true);
+        }
         return;
     },
-    getGraph: ()=>{
+    getGraph: () => {
         return dataSource.nodes;
     }
 };

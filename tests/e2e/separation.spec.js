@@ -6,7 +6,7 @@ test('should have 1 link of separation between Footloose and Kevin Bacon', async
         method: 'POST',
         uri: baseUrl + '/separation',
         body:{
-            source:'https://en.wikipedia.org/wiki/Footloose_(1984_film)'
+            sourceUrl:'https://en.wikipedia.org/wiki/Footloose_(1984_film)'
         },
         json: true
     };
@@ -19,7 +19,7 @@ test('should have 2 links of separation between Tom Cruise and Kevin Bacon', asy
         method: 'POST',
         uri: baseUrl + '/separation',
         body:{
-            source:'https://en.wikipedia.org/wiki/Tom_Cruise'
+            sourceUrl:'https://en.wikipedia.org/wiki/Tom_Cruise'
         },
         json: true
     };
@@ -32,7 +32,7 @@ test('should have ??? link of separation between Philosophy and Kevin Bacon', as
         method: 'POST',
         uri: baseUrl + '/separation',
         body:{
-            source:'https://en.wikipedia.org/wiki/Philosophy'
+            sourceUrl:'https://en.wikipedia.org/wiki/Philosophy'
         },
         json: true
     };
@@ -45,7 +45,7 @@ test('should have ??? link of separation between Taj Mahal and Kevin Bacon', asy
         method: 'POST',
         uri: baseUrl + '/separation',
         body:{
-            source:'https://en.wikipedia.org/wiki/Taj_Mahal'
+            sourceUrl:'https://en.wikipedia.org/wiki/Taj_Mahal'
         },
         json: true
     };

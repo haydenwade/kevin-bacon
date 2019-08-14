@@ -1,5 +1,8 @@
 const rp = require('request-promise');
 const globalConstants = require('./globalConstants');
+const helperMethods = require('./helperMethods');
+const fs = require('fs');
+
 
 function fetchPage(id) {
     //https://www.mediawiki.org/wiki/API:Parsing_wikitext
@@ -17,20 +20,30 @@ function fetchPage(id) {
     return rp(options);
 }
 
-function checkPrefixForMatch(str, prefixes = ['Template talk:', 'Template:', 'Category:', 'Wikipedia:', 'Help:']) {
-    for (let i = 0; i < prefixes.length; i++) {
-        const prefixLength = prefixes[i].length;
-        const substr = str.substr(0, prefixLength);
-        if (substr === prefixes[i]) {
-            return true;
+function savePageToFile(pageId, links) {
+    //pageIds need to have underscores - replaces spaces with underscore
+    const modifiedPageId = pageId.replace(/ /g,'_');
+    fs.access(`./src/data/${modifiedPageId}.json`, fs.constants.F_OK,function(error) {
+        if (error) {
+            let jsonData = {
+                links: links
+            };
+            const jsonContent = JSON.stringify(jsonData);
+            fs.writeFile(`./src/data/${modifiedPageId}.json`, jsonContent, 'utf8', function (err) {
+                if (err) {
+                    console.log("An error occurred while writing JSON Object to File.",err);
+                    throw err;
+                }
+                console.log("JSON file has been saved for page: ",modifiedPageId);
+            });
         }
-    }
-    return false;
+    });
 }
+
 /*
 Will parse wikipedia page for links and store in graph (creates vertices and edges)
 */
-async function parseSinglePage(id,dataSource) {
+async function parseSinglePage(id, dataSource) {
     try {
         // console.log(`-----------------Parsing page:${id}------------------`);
         let subPages = [];
@@ -39,15 +52,15 @@ async function parseSinglePage(id,dataSource) {
         if (page && page.parse && page.parse.links) {
             for (let i = 0; i < page.parse.links.length; i++) {
                 const link = page.parse.links[i]['*'];
-                //exclude if matches prefix
-                if (!checkPrefixForMatch(link)) {
+                //exclude if matches prefix of wiki specific links
+                if (!helperMethods.checkPrefixForMatch(link)) {
                     // console.log(link);
                     subPages.push(link);
                     //save to graph as vertex and add edges
                     const newNodeId = globalConstants.wikipediaPrefix + link;
-                    if(!dataSource.getNode(newNodeId)){
-                        dataSource.insertNode(newNodeId,{});
-                        dataSource.addEdge(globalConstants.wikipediaPrefix + id,newNodeId);
+                    if (dataSource !== null && !dataSource.getNode(newNodeId)) {
+                        dataSource.insertNode(newNodeId, {});
+                        dataSource.addEdge(globalConstants.wikipediaPrefix + id, newNodeId);
                     }
                 }
             }
@@ -62,8 +75,8 @@ async function parseSinglePage(id,dataSource) {
 Depths-first search to a depth of N
 */
 let visitedSubPages = new Set();//prevents from cycles
-async function parsePagesWithDepth(startingPageId, depth, dataSource, resetVisited = false) {
-    if(resetVisited){
+async function parsePagesWithDepth(startingPageId, depth, dataSource, saveDataToFiles, resetVisited = false) {
+    if (resetVisited) {
         visitedSubPages.clear();
     }
     // console.log(`---------------Depth:${depth}-----------------`);
@@ -72,16 +85,21 @@ async function parsePagesWithDepth(startingPageId, depth, dataSource, resetVisit
         return;
     }
     let subPages = await parseSinglePage(startingPageId, dataSource);
+    
+    //save to file
+    if(saveDataToFiles){
+        savePageToFile(startingPageId, subPages);
+    }
+
     for (let i = 0; i < subPages.length; i++) {
         if (!visitedSubPages.has(subPages[i])) {
-            await parsePagesWithDepth(subPages[i], depth - 1, dataSource);
+            await parsePagesWithDepth(subPages[i], depth - 1, dataSource, saveDataToFiles);
         }
     }
 }
 
-//parsePagesWithDepth('Kevin_Bacon', 2);
-
 module.exports = {
     parseSinglePage,
-    parsePagesWithDepth
+    parsePagesWithDepth,
+    fetchPage
 };

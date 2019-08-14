@@ -29,3 +29,7 @@ Inputs to the program will be a wikipedia url and outputs should be an integer.
 - Option 2: find db download with initial data to seed  database
 - Must also consider how to update database - wikipedia pages are updated and new ones are added often
     - Is there a way to know which pages are updated or created? Pub/Sub? Polling?
+
+
+## Challenges
+- Collecting the data (had to clean links for generic wiki pages ex: help)

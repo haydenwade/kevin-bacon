@@ -10,14 +10,21 @@ const populateGraph = {
         tags: ['api'],
         validate: {
             payload: {
-                source: Joi.string().required(),
-                depth: Joi.number().optional().default(1).max(2)
+                sourceUrl: Joi.string().required(),
+                depth: Joi.number().optional().default(1),
+                saveDataToFiles: Joi.bool().optional().default(false),
+                useGraphLikeDataSource: Joi.bool().optional().default(false)
             }
         }
     },
     handler: async function (request, h) {
         try {
-            const res = await graphRepo.populate(request.payload.source, request.payload.depth);
+            const res = await graphRepo.populate(
+                request.payload.sourceUrl, 
+                request.payload.depth, 
+                request.payload.saveDataToFiles,
+                request.payload.useGraphLikeDataSource);
+                
             return h.response(res).code(200);
         }
         catch (err) {
