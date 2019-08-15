@@ -27,6 +27,9 @@ class DirectedGraph {
         this.nodes.delete(id);
     }
     addEdge(srcId, targetId) {
+        if(!this.nodes.has(srcId)){
+            this.insertNode(srcId,{});
+        }
         const node = this.nodes.get(srcId);
         node.addOutgoingEdge(targetId);
     }

@@ -1,12 +1,12 @@
 const Joi = require('joi');
-const graphRepo = require('../repositories/graph');
+const graphHandler = require('../handler/graph');
 
 const populateGraph = {
     method: 'POST',
     path: '/graph',
     options: {
         description: 'Populates the in-memory graph',
-        notes: 'populates in-memory graph using wikipedia api',
+        notes: 'Populates in-memory graph using wikipedia api. Also has option to save pages to files',
         tags: ['api'],
         validate: {
             payload: {
@@ -19,7 +19,7 @@ const populateGraph = {
     },
     handler: async function (request, h) {
         try {
-            const res = await graphRepo.populate(
+            const res = await graphHandler.populate(
                 request.payload.sourceUrl, 
                 request.payload.depth, 
                 request.payload.saveDataToFiles,

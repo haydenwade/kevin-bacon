@@ -1,6 +1,7 @@
 const rp = require('request-promise');
 const baseUrl = 'http://localhost:3000';
 
+//jest.setTimeout(1000 * 60);//one minute
 test('should have 1 link of separation between Footloose and Kevin Bacon', async() => {
     const options = {
         method: 'POST',
@@ -26,8 +27,10 @@ test('should have 2 links of separation between Tom Cruise and Kevin Bacon', asy
     const result = await rp(options);
     expect(result).toBe(2);
 });
-
-test('should have ??? link of separation between Philosophy and Kevin Bacon', async() => {
+/*
+Philosophy->Peter Thiel->Cleveland->Kevin Bacon
+*/
+test('should have 3 link of separation between Philosophy and Kevin Bacon', async() => {
     const options = {
         method: 'POST',
         uri: baseUrl + '/separation',
@@ -37,10 +40,12 @@ test('should have ??? link of separation between Philosophy and Kevin Bacon', as
         json: true
     };
     const result = await rp(options);
-    expect(result).toBe('TODO');
+    expect(result).toBe(3);
 });
-
-test('should have ??? link of separation between Taj Mahal and Kevin Bacon', async() => {
+/*
+Taj Mahal->Moon->Apollo 13->Kevin Bacon
+*/
+test('should have 3 link of separation between Taj Mahal and Kevin Bacon', async() => {
     const options = {
         method: 'POST',
         uri: baseUrl + '/separation',
@@ -50,5 +55,5 @@ test('should have ??? link of separation between Taj Mahal and Kevin Bacon', asy
         json: true
     };
     const result = await rp(options);
-    expect(result).toBe('TODO');
+    expect(result).toBe(3);
 });

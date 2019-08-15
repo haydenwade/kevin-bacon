@@ -22,7 +22,8 @@ function fetchPage(id) {
 
 function savePageToFile(pageId, links) {
     //pageIds need to have underscores - replaces spaces with underscore
-    const modifiedPageId = pageId.replace(/ /g,'_');
+    let modifiedPageId = pageId.replace(/ /g,'_');
+    modifiedPageId = encodeURIComponent(modifiedPageId);
     fs.access(`./src/data/${modifiedPageId}.json`, fs.constants.F_OK,function(error) {
         if (error) {
             let jsonData = {
@@ -32,9 +33,10 @@ function savePageToFile(pageId, links) {
             fs.writeFile(`./src/data/${modifiedPageId}.json`, jsonContent, 'utf8', function (err) {
                 if (err) {
                     console.log("An error occurred while writing JSON Object to File.",err);
-                    throw err;
+                    //throw err;
+                }else{
+                    console.log("JSON file has been saved for page: ",modifiedPageId);
                 }
-                console.log("JSON file has been saved for page: ",modifiedPageId);
             });
         }
     });
@@ -55,9 +57,10 @@ async function parseSinglePage(id, dataSource) {
                 //exclude if matches prefix of wiki specific links
                 if (!helperMethods.checkPrefixForMatch(link)) {
                     // console.log(link);
-                    subPages.push(link);
+                    const modifiedLink = link.replace(/ /g,'_');
+                    subPages.push(modifiedLink);
                     //save to graph as vertex and add edges
-                    const newNodeId = globalConstants.wikipediaPrefix + link;
+                    const newNodeId = globalConstants.wikipediaPrefix + modifiedLink;
                     if (dataSource !== null && !dataSource.getNode(newNodeId)) {
                         dataSource.insertNode(newNodeId, {});
                         dataSource.addEdge(globalConstants.wikipediaPrefix + id, newNodeId);

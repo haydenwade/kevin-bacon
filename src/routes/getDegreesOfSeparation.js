@@ -1,5 +1,5 @@
 const Joi = require('joi');
-const graphRepo = require('../repositories/graph');
+const graphHandler = require('../handler/graph');
 
 const getDegreesOfSeparationRoute = {
     method: 'POST',
@@ -17,7 +17,9 @@ const getDegreesOfSeparationRoute = {
     },
     handler: async function (request, h) {
         try {
-            const res = await graphRepo.computeSeparation(request.payload.sourceUrl, request.payload.targetUrl);
+            //change compute depending which data source you want to use
+            //1:in-memory,2:webscraper (incomplete),3:file directory
+            const res = await graphHandler.computeSeparation1(request.payload.sourceUrl, request.payload.targetUrl);
             return h.response(res).code(200);
         }
         catch (err) {
