@@ -27,6 +27,9 @@ class DirectedGraph {
         this.nodes.delete(id);
     }
     addEdge(srcId, targetId) {
+        if(!this.nodes.has(srcId)){
+            this.insertNode(srcId,{});
+        }
         const node = this.nodes.get(srcId);
         node.addOutgoingEdge(targetId);
     }
@@ -50,39 +53,6 @@ class DirectedGraph {
      Space Complexity: O(V) - the visited set; may have to visit every vertex
     */
     computeDegreesOfSeparation(srcId, targetId) {
-        let visited = new Set();
-        let q = [];
-
-        const startNode = {
-            depth: 0,
-            id: srcId
-        };
-        q.push(startNode);
-        while (q.length > 0) {
-            const node = q.shift();
-            const currentNode = this.getNode(node.id);
-            if (currentNode) {
-                if (currentNode.id === targetId) {
-                    return node.depth;
-                }
-                visited.add(currentNode.id);
-
-                for (let [key, val] of currentNode.outgoing_edges.entries()) {
-                    if (!visited.has(key)) {
-                        q.push({ depth: node.depth + 1, id: key });
-                    }
-                }
-            } else {
-                console.log('no such page exists currently!');
-                //throw new Error('no such page exists currently!');
-            }
-        }
-        return -1;//no link between src and target
-    }
-    /*
-        TODO: what would happen if started at each end and worked towards middle
-    */
-    computeDegreesOfSeparation2(srcId, targetId) {
         let visited = new Set();
         let q = [];
 

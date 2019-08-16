@@ -1,4 +1,4 @@
-const graphRepo = require('../repositories/graph');
+const graphHandler = require('../handler/graph');
 
 const getGraph = {
     method: 'GET',
@@ -10,8 +10,9 @@ const getGraph = {
     },
     handler: async function (request, h) {
         try {
-            const graph = graphRepo.getGraph();
+            const graph = graphHandler.getGraph();
             //TODO: pretty print - break point here for debugging
+            //debugger: graph.get('https://en.wikipedia.org/wiki/Peter_Thiel').outgoing_edges.has('https://en.wikipedia.org/wiki/Cleveland')
             return h.response(graph.size).code(200);
         }
         catch (err) {

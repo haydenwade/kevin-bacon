@@ -1,5 +1,5 @@
 const Joi = require('joi');
-const graphRepo = require('../repositories/graph');
+const graphHandler = require('../handler/graph');
 
 const getDegreesOfSeparationRoute = {
     method: 'POST',
@@ -10,14 +10,16 @@ const getDegreesOfSeparationRoute = {
         tags: ['api'],
         validate: {
             payload: {
-                source: Joi.string().required(),
-                target: Joi.string().optional().default('https://en.wikipedia.org/wiki/Kevin_Bacon')
+                sourceUrl: Joi.string().optional().default('https://en.wikipedia.org/wiki/Tom_Cruise'),
+                targetUrl: Joi.string().optional().default('https://en.wikipedia.org/wiki/Kevin_Bacon')
             }
         }
     },
     handler: async function (request, h) {
         try {
-            const res = await graphRepo.computeSeparation(request.payload.source, request.payload.target);
+            //change compute depending which data source you want to use
+            //1:in-memory,2:webscraper (incomplete),3:file directory
+            const res = await graphHandler.computeSeparation1(request.payload.sourceUrl, request.payload.targetUrl);
             return h.response(res).code(200);
         }
         catch (err) {
