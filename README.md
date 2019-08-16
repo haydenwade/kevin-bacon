@@ -35,6 +35,9 @@ Inputs to the program will be a wikipedia url and outputs should be an integer.
 - I also tried to "live" scrape data as BFS but the performance was so bad I didn't invest any more time in it. Same approach but different data source.
 - Future: use a graph database to store data for better performance
 
+### Optimization
+- As nodes are added to the graph, via scraping, store the depth at which they were scraped. This approach only works since Kevin_Bacon is always the target. Start scraping from Kevin_Bacon. The time complexity would be O(1).
+
 ## Considerations
 
 ### Populating Graph
